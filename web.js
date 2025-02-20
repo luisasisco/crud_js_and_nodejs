@@ -32,20 +32,50 @@ let resevation = [
 
 ];
 
+let id = null;
+let modal = new bootstrap.Modal(document.getElementById("modalIdForm"));
+
 const showData = () => {
     let informationData = "";
 
     resevation.forEach((data) => {
         informationData += `<tr>
-              <td scope="row">${data.Nroom}</th>
+              <td scope="row">${data.Nroom}</td>
               <td scope="row">${data.name}</td>
               <td scope="row">${data.roomType}</td>
               <td scope="row">${data.price}</td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="openModalById(${data.Nroom})">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="delate(${data.Nroom})">Eliminar</button>
             </tr>`;
     });
+
 
     let table = document.getElementById("tableData");
     return table.innerHTML = informationData;
 }
 
+function openModalById(idParam = null){
+    if(idParam != null){
+        const resevations = resevation.find((r) => r.Nroom == idParam);
+        id = idParam;
+        document.getElementById("name").value = resevations.name; 
+        document.getElementById("precio").value = resevations.price;
+        document.getElementById("Habitacion").value = resevations.Habitacion;
+        document.getElementById("NHabitaciones").value = resevations.NHabitaciones;
+    }else{
+        id = null;
+        document.getElementById("name").value = ""; 
+        document.getElementById("precio").value = ""; 
+        document.getElementById("Habitacion").value =""; 
+        document.getElementById("NHabitaciones").value = ""; 
+    }
+   
+    modal.show();
+}
+
+function delate(idpara) {
+    resevation=resevation.filter((r) => r.Nroom != idpara);
+    showData();
+}
 showData();
